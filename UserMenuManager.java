@@ -32,7 +32,6 @@ public class UserMenuManager {
     }
 
     public static void startApplication() {
-        displayMainMenu();
         Scanner scanner = new Scanner(System.in);
 
         ArrayList<Artwork> resultList = null;
@@ -46,12 +45,12 @@ public class UserMenuManager {
         while (select != 15) {
             while (true) {
                 try {
+                    displayMainMenu();
                     System.out.print("Enter your choice: ");
                     select = scanner.nextInt();
                     scanner.nextLine();
                     break;
                 } catch (InputMismatchException e) {
-
                 }
             }
 
@@ -96,8 +95,12 @@ public class UserMenuManager {
                         }
                     }
 
-                    ArtworkManager.appendArtwork(new Painting(id, title, author, year, type, width, height,
-                            printType, style));
+                    if (ArtworkManager.appendArtwork(new Painting(id, title, author, year, type, width, height,
+                            printType, style))) {
+                        System.out.println("Artwork has successfully appended.");
+                    } else {
+                        System.out.println("Something went wrong.");
+                    }
 
                     break;
                 case 2:
@@ -145,8 +148,12 @@ public class UserMenuManager {
                         }
                     }
 
-                    ArtworkManager.appendArtwork(new Sculpture(id, title, author, year, type, width, height,
-                            material, weight, depth));
+                    if (ArtworkManager.appendArtwork(new Sculpture(id, title, author, year, type, width, height,
+                        material, weight, depth))) {
+                        System.out.println("Artwork has successfully appended.");
+                    } else {
+                        System.out.println("Something went wrong.");
+                    }
 
                     break;
                 case 3:
@@ -189,8 +196,12 @@ public class UserMenuManager {
                         }
                     }
 
-                    ArtworkManager.appendArtwork(new Photograph(id, title, author, year, type, width, height,
-                            photoType, format));
+                    if (ArtworkManager.appendArtwork(new Photograph(id, title, author, year, type, width, height,
+                        photoType, format))) {
+                        System.out.println("Artwork has successfully appended.");
+                    } else {
+                        System.out.println("Something went wrong.");
+                    }
 
                     break;
                 case 4:
@@ -222,26 +233,60 @@ public class UserMenuManager {
                             }
                         }
 
-                        try {
-//                            ArtworkManager.deleteArtwork(id);
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            throw new RuntimeException();
+                        if (ArtworkManager.deleteArtwork(id)) {
+                            System.out.println("Artwork has successfully removed.");
+                        } else {
+                            System.out.println("Something went wrong.");
                         }
                     }
                     break;
                 case 6:
-                    while (true) {
-                        System.out.print("Enter id of artwork you would like to change: ");
+                    System.out.print("What would you like to change (author/year): ");
+                    String choice = scanner.nextLine();
 
-                        try {
-                            id = scanner.nextInt();
-                            scanner.nextLine();
-                            break;
-                        } catch (InputMismatchException e) {
-                            throw new RuntimeException(e);
+                    if (choice.equalsIgnoreCase("author")) {
+                        while (true) {
+                            System.out.println("Enter id: ");
+
+                            try {
+                                id = scanner.nextInt();
+                                scanner.nextLine();
+                                break;
+                            } catch (InputMismatchException e) {
+                                throw new RuntimeException();
+                            }
                         }
 
+                        System.out.print("Enter new author: ");
+                        String newAuthor = scanner.nextLine();
 
+                        if (ArtworkManager.editAuthor(id, newAuthor)) {
+                            System.out.println("Author has successfully changed.");
+                        } else {
+                            System.out.println("Something went wrong.");
+                        }
+                    } else if (choice.equalsIgnoreCase("year")) {
+                        while (true) {
+                            System.out.println("Enter id: ");
+
+                            try {
+                                id = scanner.nextInt();
+                                scanner.nextLine();
+                                break;
+                            } catch (InputMismatchException e) {
+                                throw new RuntimeException();
+                            }
+                        }
+
+                        System.out.print("Enter new year: ");
+                        int newYear = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (ArtworkManager.editYear(id, newYear)) {
+                            System.out.println("Year has successfully changed.");
+                        } else {
+                            System.out.println("Something went wrong.");
+                        }
                     }
                     break;
                 case 7:
@@ -287,6 +332,7 @@ public class UserMenuManager {
 
                     break;
                 case 11:
+                    // Age range
                     break;
                 case 12:
                     System.out.print("Enter title you would like to sort: ");
@@ -307,8 +353,10 @@ public class UserMenuManager {
                     type = scanner.nextLine();
 
                     resultList = ArtworkManager.typeStatistics(type);
-                    System.out.println();
-
+                    System.out.println(resultList);
+                    break;
+                case 15:
+                    System.out.println("Exiting...");
                     break;
                 default:
                     System.out.println("Invalid selection.");

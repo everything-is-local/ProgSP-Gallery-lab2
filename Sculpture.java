@@ -36,4 +36,13 @@ public class Sculpture extends Artwork {
     public void setWeight(double weight) {
         this.weight = weight;
     }
+
+    @Override
+    public String toString() {
+        return "Sculpture{" +
+                "depth=" + depth +
+                ", material='" + material + '\'' +
+                ", weight=" + weight +
+                '}';
+    }
 }

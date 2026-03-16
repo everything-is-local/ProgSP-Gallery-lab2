@@ -26,4 +26,12 @@ public class Photograph extends Artwork {
     public void setPhotoType(String photoType) {
         this.photoType = photoType;
     }
+
+    @Override
+    public String toString() {
+        return "Photograph{" +
+                "format='" + format + '\'' +
+                ", photoType='" + photoType + '\'' +
+                '}';
+    }
 }

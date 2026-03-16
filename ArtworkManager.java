@@ -6,28 +6,21 @@ import java.util.List;
 public class ArtworkManager {
     private static List<Artwork> collection = new ArrayList<Artwork>();
 
-    static Artwork getArtworkByID(int id) {
-        for (Artwork c : collection) {
-            if (c.getId() == id)
-                return c;
+    static boolean appendArtwork(Artwork object) throws NullPointerException {
+        if (object == null)
+            throw new NullPointerException();
+
+        return collection.add(object);
+    }
+
+    static boolean deleteArtwork(int id) throws NullPointerException {
+        for (Artwork a : collection) {
+            if (id == a.getId()) {
+                return collection.remove(a);
+            }
         }
 
-        return null;
-    }
-
-    static void appendArtwork(Artwork object) throws NullPointerException {
-        if (object == null)
-            throw new NullPointerException();
-
-        collection.add(object);
-    }
-
-    static boolean deleteArtwork(Artwork object) throws NullPointerException {
-        if (object == null)
-            throw new NullPointerException();
-
-        return collection.remove(object);
-        // id надо сделать уникальным
+        return false;
     }
 
     static void listCollection() {
@@ -36,17 +29,30 @@ public class ArtworkManager {
         }
     }
 
-    static void editAuthor(int id, String newAuthor) {
-//        if (object == null)
-//            throw new NullPointerException();
+    static boolean editAuthor(int id, String newAuthor) {
+        boolean found = false;
 
-        for (Artwork c: collection) {
-
+        for (Artwork a : collection) {
+            if (id == a.getId()) {
+                a.setAuthor(newAuthor);
+                found = true;
+            }
         }
+
+        return found;
     }
 
-    static void editYear(int id) {
+    static boolean editYear(int id, int newYear) {
+        boolean found = false;
 
+        for (Artwork a : collection) {
+            if (id == a.getId()) {
+                a.setYear(newYear);
+                found = true;
+            }
+        }
+
+        return found;
     }
 
     static Artwork searchByTitle(String title) {
@@ -54,6 +60,7 @@ public class ArtworkManager {
             if (title.equals(c.getTitle()))
                 return c;
         }
+
         return null;
     }
 
@@ -90,8 +97,15 @@ public class ArtworkManager {
         return (ArrayList<Artwork>) result;
     }
 
-    static ArrayList<Artwork> filterByYearRange(int yearRange) {
-        return null;
+    static ArrayList<Artwork> filterByYearRange(int firstBorder, int secondBorder) {
+        List<Artwork> result = new ArrayList<Artwork>();
+
+        for (Artwork c : collection) {
+            if (c.getYear() >= firstBorder && c.getYear() <= secondBorder)
+                result.add(c);
+        }
+
+        return (ArrayList<Artwork>) result;
     }
 
     static ArrayList<Artwork> sortByTitle(String title) {
@@ -125,8 +139,6 @@ public class ArtworkManager {
 
         return (ArrayList<Artwork>) result;
     }
-
-    // Сохранение/загрузка
 
 
 }

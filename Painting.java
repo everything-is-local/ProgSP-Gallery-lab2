@@ -25,6 +25,14 @@ public class Painting extends Artwork {
     public void setStyle(String style) {
         this.style = style;
     }
+
+    @Override
+    public String toString() {
+        return "Painting{" +
+                "printType='" + printType + '\'' +
+                ", style='" + style + '\'' +
+                '}';
+    }
 }
 
 
